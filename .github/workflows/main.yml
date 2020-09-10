@@ -27,6 +27,7 @@ jobs:
         with:
           name: apollo-lambda-bucket-stack
           template: cf/bucket-template.yml
+          no-fail-on-empty-changeset: 1
 
       - name: Upload lambda to S3
         run: aws cloudformation package --template cf/template.yml --s3-bucket mybucket --output-template-file lambda-template.yml
@@ -40,3 +41,4 @@ jobs:
           name: apollo-graphql-stack
           template: cf/lambda-template.yml
           capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
+          no-fail-on-empty-changeset: 1
