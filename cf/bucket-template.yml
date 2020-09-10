@@ -8,7 +8,7 @@ Resources:
       AccessControl: Private
 
 Outputs:
-  lambdaBucket:
+  LambdaBucket:
     Description: Bucket for Lambda code
     Value:
       Ref: LambdaCodeBucket

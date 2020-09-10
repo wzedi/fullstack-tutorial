@@ -13,7 +13,7 @@ Resources:
           AttributeType: N
       KeySchema:
         - AttributeName: id
-          KeyType: RANGE
+          KeyType: HASH
       SSESpecification:
         SSEEnabled: true
 
@@ -27,7 +27,7 @@ Resources:
           AttributeType: N
       KeySchema:
         - AttributeName: launchId
-          KeyType: RANGE
+          KeyType: HASH
       SSESpecification:
         SSEEnabled: true
 
