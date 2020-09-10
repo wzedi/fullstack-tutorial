@@ -23,6 +23,7 @@ jobs:
           mask-aws-account-id: true
           
       - name: Deploy bucket template via CloudFormation
+        id: deploy-template
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
         with:
           name: apollo-lambda-bucket-stack
@@ -30,10 +31,11 @@ jobs:
           no-fail-on-empty-changeset: 1
 
       - name: Upload lambda to S3
-        run: aws cloudformation package --template cf/template.yml --s3-bucket mybucket --output-template-file lambda-template.yml
+        id: upload-lambda
+        run: aws cloudformation package --template cf/template.yml --s3-bucket ${{ steps.deploy-template.outputs.LambdaBucket }} --output-template-file lambda-template.yml
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}    
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - name: Deploy app via CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
