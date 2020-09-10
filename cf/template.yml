@@ -34,7 +34,7 @@ Resources:
   ServerLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
-      CodeUri: /server/src
+      CodeUri: server/src
       Handler: index.graphqlHandler
       Role: !GetAtt LambdaIAMPermissions.Arn
       Runtime: nodejs12.x
