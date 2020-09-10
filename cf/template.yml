@@ -1,0 +1,72 @@
+AWSTemplateFormatVersion: 2010-09-09
+Transform: 'AWS::Serverless-2016-10-31'
+
+Resources:
+  UserDynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: user
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+
+  TripDynamoDB:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: trip
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: launchId
+          AttributeType: N
+      KeySchema:
+        - AttributeName: launchId
+          KeyType: RANGE
+      SSESpecification:
+        SSEEnabled: true
+
+  ServerLambdaFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      CodeUri: /server/src
+      Handler: index.graphqlHandler
+      Role: !GetAtt LambdaIAMPermissions.Arn
+      Runtime: nodejs12.x
+
+  LambdaIAMPermissions:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+      Policies:
+        - PolicyName: root
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:*
+                  - dynamodb:*
+                Resource: "*"
+
+  ClientS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      AccessControl: PublicRead
+      BucketName: fullstack-gql-website-deployment
+      WebsiteConfiguration: 
+        ErrorDocument: index.html
+        IndexDocument: index.html
