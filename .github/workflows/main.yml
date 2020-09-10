@@ -32,7 +32,7 @@ jobs:
 
       - name: Upload lambda to S3
         id: upload-lambda
-        run: aws cloudformation package --template cf/template.yml --s3-bucket ${{ steps.deploy-template.outputs.LambdaBucket }} --output-template-file lambda-template.yml
+        run: aws cloudformation package --template cf/template.yml --s3-bucket ${{ steps.deploy-template.outputs.LambdaBucket }} --output-template-file cf/lambda-template.yml
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
