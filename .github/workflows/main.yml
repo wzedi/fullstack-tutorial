@@ -5,15 +5,17 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  build-deploy-backend:
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out repository
+        id: checkout
         uses: actions/checkout@v2
 
       # Configure AWS credentials - instructions for storing the credentials are in the README
       - name: Configure AWS credentials
+        id: configure-creds
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -37,10 +39,39 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Deploy app via CloudFormation
+      - name: Deploy infra via CloudFormation
+        id: deploy-infra
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
         with:
           name: apollo-graphql-stack
           template: cf/lambda-template.yml
           capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
           no-fail-on-empty-changeset: 1
+
+  build-deploy-frontend:
+    runs-on: ubuntu-latest
+    needs: build-deploy-backend
+
+    steps:
+      - name: Check out repository
+        id: checkout
+        uses: actions/checkout@v2
+      
+      # Configure AWS credentials - instructions for storing the credentials are in the README
+      - name: Configure AWS credentials
+        id: configure-creds
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-southeast-2
+          # this explicitly ensures that the AWS account ID does not get leaked into logs
+          mask-aws-account-id: true
+          
+      - name: Build React frontend
+        id: build-frontend
+        run: cd client && npm i && npm run build
+      
+      - name: Deploy frontend to S3 bucket
+        id: deploy-frontend
+        run: aws s3 cp build s3://fullstack-gql-website-deployment/ --recursive
