@@ -22,9 +22,21 @@ jobs:
           # this explicitly ensures that the AWS account ID does not get leaked into logs
           mask-aws-account-id: true
           
+      - name: Deploy bucket template via CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
+        with:
+          name: apollo-lambda-bucket-stack
+          template: cf/bucket-template.yml
+
+      - name: Upload lambda to S3
+        run: aws cloudformation package --template cf/template.yml --s3-bucket mybucket --output lambda-template.yml
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}    
+
       - name: Deploy app via CloudFormation
         uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
         with:
           name: apollo-graphql-stack
-          template: cf/template.yml
+          template: cf/lambda-template.yml
           capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
