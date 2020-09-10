@@ -21,3 +21,9 @@ jobs:
           aws-region: ap-southeast-2
           # this explicitly ensures that the AWS account ID does not get leaked into logs
           mask-aws-account-id: true
+          
+      - name: Deploy app via CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1.0.3
+        with:
+          name: apollo-graphql-stack
+          template: cf/template.yml
