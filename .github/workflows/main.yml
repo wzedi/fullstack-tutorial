@@ -27,3 +27,4 @@ jobs:
         with:
           name: apollo-graphql-stack
           template: cf/template.yml
+          capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
