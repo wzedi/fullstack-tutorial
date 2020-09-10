@@ -1,0 +1,14 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Bucket for Apollo GraphQL Lambda code
+
+Resources:
+  LambdaCodeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: Private
+
+Outputs:
+  lambdaBucket:
+    Description: Bucket for Lambda code
+    Value:
+      Ref: LambdaCodeBucket
