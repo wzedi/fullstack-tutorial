@@ -47,6 +47,10 @@ jobs:
           template: cf/lambda-template.yml
           capabilities: CAPABILITY_IAM, CAPABILITY_AUTO_EXPAND
           no-fail-on-empty-changeset: 1
+          
+      - name: Write config to dotenv file
+        id: write-config
+        run: echo "REACT_APP_CLIENT_URI=${{ steps.deploy-infra.outputs.GraphQL }}execute-api.ap-southeast-2.amazonaws.com/Prod/graphql" > client/.env.production
 
   build-deploy-frontend:
     runs-on: ubuntu-latest
