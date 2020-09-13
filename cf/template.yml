@@ -38,6 +38,17 @@ Resources:
       Handler: index.graphqlHandler
       Role: !GetAtt LambdaIAMPermissions.Arn
       Runtime: nodejs12.x
+      Events:
+        GetRequest:
+          Type: Api
+          Properties:
+            Path: /graphql
+            Method: get
+        PostRequest:
+          Type: Api
+          Properties:
+            Path: /graphql
+            Method: post
 
   LambdaIAMPermissions:
     Type: AWS::IAM::Role
@@ -85,3 +96,9 @@ Resources:
               - "s3:GetObject"
             Resource:
               Fn::Sub: "arn:aws:s3:::${ClientS3Bucket}/*"
+
+Outputs:
+  GraphQL:
+    Description: URL of GraphQL endpoint
+    Value:
+      Ref: ServerLambdaFunction
