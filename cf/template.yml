@@ -101,4 +101,4 @@ Outputs:
   GraphQL:
     Description: URL of GraphQL endpoint
     Value:
-      Ref: ServerLambdaFunction
+      Ref: ServerlessRestApi
