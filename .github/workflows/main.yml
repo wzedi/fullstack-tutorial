@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build-deploy-backend:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -51,26 +51,6 @@ jobs:
       - name: Write config to dotenv file
         id: write-config
         run: echo "REACT_APP_CLIENT_URI=${{ steps.deploy-infra.outputs.GraphQL }}.execute-api.ap-southeast-2.amazonaws.com/Prod/graphql" > client/.env
-
-  build-deploy-frontend:
-    runs-on: ubuntu-latest
-    needs: build-deploy-backend
-
-    steps:
-      - name: Check out repository
-        id: checkout
-        uses: actions/checkout@v2
-      
-      # Configure AWS credentials - instructions for storing the credentials are in the README
-      - name: Configure AWS credentials
-        id: configure-creds
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-southeast-2
-          # this explicitly ensures that the AWS account ID does not get leaked into logs
-          mask-aws-account-id: true
           
       - name: Build React frontend
         id: build-frontend
