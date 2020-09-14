@@ -31,6 +31,17 @@ Resources:
       SSESpecification:
         SSEEnabled: true
 
+  ApiGatewayApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'POST, GET'"
+        AllowHeaders: "'X-Forwarded-For'"
+        AllowOrigin: "*"
+        MaxAge: "'600'"
+        AllowCredentials: True
+
   ServerLambdaFunction:
     Type: 'AWS::Serverless::Function'
     Properties:
@@ -44,11 +55,15 @@ Resources:
           Properties:
             Path: /graphql
             Method: get
+            RestApiId: 
+              Ref: ApiGatewayApi
         PostRequest:
           Type: Api
           Properties:
             Path: /graphql
             Method: post
+            RestApiId: 
+              Ref: ApiGatewayApi
 
   LambdaIAMPermissions:
     Type: AWS::IAM::Role
