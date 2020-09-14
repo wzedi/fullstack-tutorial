@@ -7,4 +7,5 @@ fi
 
 user=$1
 
-curl -i -u "$user" -X POST "https://api.github.com/repos/wzedi/fullstack-tutorial/dispatches" -d '{"event_type": "deploy"}'
+REPO=$(git config --get remote.origin.url | sed 's/git@github.com://g; s/.git//g;')
+curl -i -u "$user" -X POST "https://api.github.com/repos/$REPO/dispatches" -d '{"event_type": "deploy"}'
