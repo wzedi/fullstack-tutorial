@@ -87,6 +87,7 @@ Resources:
                 Action:
                   - lambda:*
                   - dynamodb:*
+                  - cloudwatch:*
                 Resource: "*"
 
   ClientS3Bucket:
