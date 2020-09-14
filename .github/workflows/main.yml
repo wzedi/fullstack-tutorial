@@ -3,6 +3,8 @@ name: AWS Deploy
 on:
   push:
     branches: [ master ]
+  repository_dispatch:
+    types: deploy
 
 jobs:
   build-deploy:
