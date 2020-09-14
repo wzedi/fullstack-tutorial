@@ -60,4 +60,4 @@ jobs:
       
       - name: Deploy frontend to S3 bucket
         id: deploy-frontend
-        run: aws s3 cp client/build s3://fullstack-gql-website-deployment/ --recursive
+        run: aws s3 cp client/build s3://io.orchestrated.test1.fullstack-gql-website-deployment/ --recursive

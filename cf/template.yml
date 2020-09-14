@@ -78,7 +78,7 @@ Resources:
     Type: AWS::S3::Bucket
     Properties: 
       AccessControl: PublicRead
-      BucketName: fullstack-gql-website-deployment
+      BucketName: io.orchestrated.test1.fullstack-gql-website-deployment
       WebsiteConfiguration: 
         ErrorDocument: index.html
         IndexDocument: index.html

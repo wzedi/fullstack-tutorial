@@ -4,7 +4,7 @@ This is the fullstack app for the [Apollo tutorial](http://apollographql.com/doc
 
 ## View it
 
-To view the example setup, go [here](http://fullstack-gql-website-deployment.s3-website-ap-southeast-2.amazonaws.com/).
+To view the example setup, go [here](http://io.orchestrated.test1.fullstack-gql-website-deployment.s3-website-ap-southeast-2.amazonaws.com/).
 
 ## Run it locally
 
